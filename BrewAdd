@@ -1,0 +1,8 @@
+cask "visual-studio-code"
+cask "intellij-idea"
+cask "typora"
+
+brew "docker"
+cask "adoptopenjdk/openjdk/adoptopenjdk8"
+cask "adoptopenjdk11"
+

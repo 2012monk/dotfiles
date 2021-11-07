@@ -1,0 +1,20 @@
+# 깃의 사용자별 설정 파일입니다.
+[user]
+	name = monk
+	email = 2012.monk@gmail.com
+# 다음 줄을 알맞게 고치고 앞의 주석을 제거하십시오:
+#	name = monk
+#	email = 2012.monk@gmail.com
+[alias]
+	ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi"
+	ncommit = commit -a --allow-empty-message -m \"\"
+[core]
+	autocrlf = input
+	quotepath = off
+[color]
+	ui = auto
+[i18n]
+	commitEncoding = utf-8
+	logOutputEncoding = utf-8
+[init]
+  defaultBranch = main

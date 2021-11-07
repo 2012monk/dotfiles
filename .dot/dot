@@ -1,0 +1,39 @@
+#!/bin/bash
+
+DIR=$HOME/dotfiles
+BACKUP=$HOME/backup_dots
+
+backup(){
+    TARGETS=$(find . ! \( -path './.git' -prune \) -type d )
+
+    if [[ ! -d $BACKUP ]]; then
+        mkdir $BACKUP
+    fi
+
+    for f in $TARGETS; do
+        if [ -d $f ]; then
+            mv $f ./backup_dots
+        fi
+    done
+}
+
+if [[ "$#" -lt 1 ]]; then
+    echo "no args"
+    exit 1
+fi
+
+args=("$@")
+ac="$#"
+cmd="$args[0]"
+
+if [[ $cmd == "init" ]]; then
+    ./bootstrap.sh
+fi
+# else if [[ $cmd == "add" ]]; then
+#     target=$(pwd)/args[2]
+#     if [[ $ac -lt 2 ] || [ -n target ] || [ ! -f target ] || [ ! -f target ]]; then
+#         echo "invalid argument $target"
+#         exit 1
+#     fi
+#     rsync $target $DIR
+# fi
