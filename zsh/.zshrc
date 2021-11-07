@@ -15,6 +15,27 @@ export PATH=${PATH}:$JAVA_HOME/bin
 export PATH=~/jetbrains:$PATH
 export PATH=${PATH}:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld
 alias casm="casm.sh"
+# -- List Plugins ----------------------------------------------------------------
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  fzf
+  fasd
+  asdf
+  tmux
+  # iterm2
+  fd
+  z
+  zsh-prompt-benchmark
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  zsh-interactive-cd
+  # osx
+)
 
 # -- Plugin setups ----------------------------------------------------------------
 
@@ -33,7 +54,7 @@ export MANPAGER="bat -p -l man"
 # -- zsh autosuggestion -----------------------------------------------------------
 bindkey '^[' beginning-of-line
 bindkey '^]' end-of-line
-ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd)
+# ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd)
 
 # zsh interactive
 # source zsh-interactive-cd.plugin.zsh
@@ -71,13 +92,13 @@ source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme
 # DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -87,7 +108,7 @@ source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -100,23 +121,6 @@ source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  fzf
-  fasd
-  asdf
-  tmux
-  iterm2
-  fd
-  z
-  # zsh-interactive-cd
-  osx
-)
 
 
 # User configuration
@@ -146,8 +150,6 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey "[D" backward-word
 bindkey "[C" forward-word
 # bindkey "^[a" beginning-of-line
@@ -162,15 +164,7 @@ bindkey "[C" forward-word
 # }
 
 
-# AGNOSTER PROMPT SETUP
-# prompt_context() {
-  # Custom (Random emoji)
-#  emojis=("⚡️" "🔥" "🇰" "👑" "😎" "🐸" "🐵" "🦄" "🌈" "🍻" "🚀" "💡" "🎉" "🔑" "🚦" "🌙")
-#  RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
-#  prompt_segment black default "monk ${emojis[$RAND_EMOJI_N]} "
-# }
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
 zssh() ssh "$@" -t zsh
 
@@ -179,11 +173,11 @@ zssh() ssh "$@" -t zsh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)"
-  fi
-}
+# prompt_context() {
+#   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+#     prompt_segment black default "%(!.%{%F{yellow}%}.)"
+#   fi
+# }
 
 DEFAULT_USER=leesoungmook
 
@@ -216,3 +210,16 @@ alias lt="lsd --tree"
 alias ls="lsd"
 alias status="neofetch"
 
+zshdump() {
+    autoload -Uz compinit
+    for dump in ~/.zcompdump(N.mh+24); do
+        compinit
+    done
+    compinit -C
+}
+
+promptdump() {
+    exec 2> ~/zsh.err
+    set -x
+    set +x
+}

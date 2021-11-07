@@ -18,3 +18,5 @@
 	logOutputEncoding = utf-8
 [init]
   defaultBranch = main
+[oh-my-zsh]
+	hide-dirty = 1
