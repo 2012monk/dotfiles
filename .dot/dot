@@ -24,11 +24,23 @@ fi
 
 args=("$@")
 ac="$#"
-cmd="$args[0]"
+cmd=$args
 
 if [[ $cmd == "init" ]]; then
     ./bootstrap.sh
 fi
+if [[ $cmd == "status" ]]; then
+    echo "asdf"
+    if [[ $(which tig) ]]; then
+        cd $DIR
+        tig status
+    else
+        git --git-dir $DIR/.git --work-tree $DIR status
+    fi
+else
+    echo "unkown command"
+fi
+
 # else if [[ $cmd == "add" ]]; then
 #     target=$(pwd)/args[2]
 #     if [[ $ac -lt 2 ] || [ -n target ] || [ ! -f target ] || [ ! -f target ]]; then
@@ -37,3 +49,4 @@ fi
 #     fi
 #     rsync $target $DIR
 # fi
+

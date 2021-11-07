@@ -16,14 +16,24 @@ export PATH=~/jetbrains:$PATH
 export PATH=${PATH}:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld
 alias casm="casm.sh"
 
-# fzf option
+# -- Plugin setups ----------------------------------------------------------------
+
+# -- fzf option -------------------------------------------------------------------
 
 export FZF_DEFALT_COMMAND="fd . -t f"
 export FZF_DEFAULT_OPTS='--ansi --height 60% --layout=reverse --border'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'  --preview-window=up:40%"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-alias ff="fzf"
+
+# -- man page with bat ------------------------------------------------------------
+
+export MANPAGER="bat -p -l man"
+
+# -- zsh autosuggestion -----------------------------------------------------------
+bindkey '^[' beginning-of-line
+bindkey '^]' end-of-line
+ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd)
 
 # zsh interactive
 # source zsh-interactive-cd.plugin.zsh
@@ -104,7 +114,7 @@ plugins=(
   iterm2
   fd
   z
-  zsh-interactive-cd
+  # zsh-interactive-cd
   osx
 )
 
@@ -140,8 +150,8 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey "[D" backward-word
 bindkey "[C" forward-word
-bindkey "^[a" beginning-of-line
-bindkey "^[e" end-of-line
+# bindkey "^[a" beginning-of-line
+# bindkey "^[e" end-of-line
 
 # POWERLINE10k prompt setup
 # prompt_context() {
@@ -165,13 +175,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 zssh() ssh "$@" -t zsh
 
 
-# NVIM SETUP
-alias vi="nvim"
-
-# customized alias setups
-alias tree="tree -C"
-alias grep="grep --color=always"
-alias tg="tig"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -184,8 +187,8 @@ prompt_context() {
 
 DEFAULT_USER=leesoungmook
 
-
-[ -s "/Users/leesoungmook/.scm_breeze/scm_breeze.sh" ] && source "/Users/leesoungmook/.scm_breeze/scm_breeze.sh"
+# scm_breeze
+# [ -s "/Users/leesoungmook/.scm_breeze/scm_breeze.sh" ] && source "/Users/leesoungmook/.scm_breeze/scm_breeze.sh"
 
 # Check zsh startup time function
 timezsh() {
@@ -199,4 +202,17 @@ fz() {
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
 
+# NVIM SETUP
+alias vi="nvim"
+
+# customized alias setups
+alias ff="fzf"
+alias tree="tree -C"
+alias grep="grep --color=always"
+alias tg="tig"
+alias la="lsd -la"
+alias ll="lsd -l"
+alias lt="lsd --tree"
+alias ls="lsd"
+alias status="neofetch"
 

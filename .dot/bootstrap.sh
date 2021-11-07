@@ -50,8 +50,8 @@ nvim +PlugInstall +qall
 
 # -- tmux setup --------------------------------------------------------------------------
 
-if [[ ! -d "$HOME/.tmux" ]]; then
-    git clone https://github.com/gpakosz/.tmux.git $HOME/
-    ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
-fi
+# if [[ ! -d "$HOME/.tmux" ]]; then
+#     git clone https://github.com/gpakosz/.tmux.git $HOME/
+#     ln -s -f $HOME/.tmux/.tmux.conf $HOME/.tmux.conf
+# fi
 
