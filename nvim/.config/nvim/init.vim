@@ -3,87 +3,59 @@
 "    syntax on
 " endif
 
-filetype plugin on
+filetype plugin indent on
+
 "set -g TERM xterm-256color
-set si " smart indent
 set hlsearch " search highlight
 set ruler
 set title
 set nobackup
 set wmnu " tab autocomplete
 set showmatch " show match parenthesis
-set expandtab " tab -> space
-set tabstop=4
-set shiftwidth=4
 set history=1000
 set nowrap
-set autoindent
-set cindent
 set nu
 set incsearch
 set showcmd
+set autoread
+
+set cindent
+set si " smart indent
+set expandtab " tab -> space
+set tabstop=4
+set shiftwidth=4
+set nocompatible
+
+set splitright
+" set autoindent
+" language indent size
+if has("autocmd")
+    filetype on
+    autocmd FileType vim setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType lua setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType sh setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType json setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType toml setlocal ts=2 sts=2 sw=2 et
+endif
+
+source  ~/.config/nvim/plug.vim
 
 " COC setup
 set encoding=utf-8
 
 set hidden
 
+" show white space
+set showbreak=↪
+set listchars+=eol:¬,tab:→·,trail:-,extends:>,precedes:<
 
 " Done COC
 let g:solarized_termcolors=256
 
-if has("nvim")
-    let g:plug_home = stdpath('data') . '/plugged'
-endif
-"
-call plug#begin('~/.vim/plugged')
-
-" Make sure you use single quotes
-
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-" Plug 'junegunn/vim-easy-align'
-" Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-sensible'
-Plug 'cohama/lexima.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-Plug 'yggdroot/indentline' " Indent
-Plug 'scrooloose/nerdcommenter' " comment
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" fzf vim
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-Plug 'johngrib/vim-game-code-break'
-
-Plug 'mhinz/vim-startify' " session manage
-
-Plug 'easymotion/vim-easymotion' " easymotion
-
-Plug 'tpope/vim-surround'
-
-Plug 'majutsushi/tagbar'
-" lsp
-if has("nvim")
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'preservim/nerdtree'
-    " nerdtree git
-    Plug 'preservim/nerdtree' |
-        \ Plug 'Xuyuanp/nerdtree-git-plugin'
-endif
-
-call plug#end()
-
 " indent setup
-"let g:indentLine_color_term = 230
-let g:indentLine_bgcolor_term = 138 
+let g:indentLine_color_term = 138
+" let g:indentLine_bgcolor_term = 138
 noremap < <<
 noremap > >>
 vnoremap < <gv
@@ -103,7 +75,7 @@ nnoremap <C-f> :NERDTreeFind<CR>
 nnoremap <C-t> :Files <CR>
 
 " NerdCommenter Keymap
-source ~/.config/nvim/after/plugin/nerdcommneter.vim
+" source ~/.config/nvim/after/plugin/nerdcommneter.vim
 
 nmap <C-_> <plug>NERDCommenterToggle
 vmap <C-_> <plug>NERDCommenterToggle<CR>gv
@@ -125,3 +97,20 @@ endif
 " easymotion
 map <Leader> <Plug>(easymotion-prefix)
 
+
+" cursor at last edit postion
+au BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\ exe "norm g`\"" |
+\ endi
+
+" if ko encoding ko
+" if $LANG[0]=='k' && $LANG[1]=='o'
+"     set fileencoding=korea
+" endif
+"
+
+let g:startify_session_autoload=1
+let g:startify_session_dir = '~/.config/nvim/session'
+
+:command Pyrun :w | below new term python3<CR>

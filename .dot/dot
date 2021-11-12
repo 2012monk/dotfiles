@@ -1,20 +1,58 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# set -Eeuo pipefail
 DIR=$HOME/dotfiles
 BACKUP=$HOME/backup_dots
 
+err() {
+  msg=$1
+  if [[ ! -n $msg ]]; then
+    msg="err"
+  fi
+  echo 1>&2 $msg
+  exit 1
+}
+
+confirm() {
+  read -r -n 1 -p "$1[y/n]" ans
+  if [[ $ans =~ ^([yY])$ ]]; then
+    true
+  else
+    false
+  fi
+}
+
+link() {
+  if [[ ! $1 ]]; then
+    err "no argument exists"
+  elif [[ ! -d $DIR/$1 ]]; then
+    err "$1 is neighter file nor directory"
+  fi
+  cd $DIR
+  change_list=$(diff -rq "$HOME" "$1" | grep "^Only in $1")
+  if [[ -z $change_list ]]; then
+    err "already up to date"
+  fi
+
+  stow -nv $1 2>&1 | sed '$ d'
+  if confirm; then
+    printf '\n\nLINK Complete\n'
+    stow -v $1
+  fi
+}
+
 backup(){
-    TARGETS=$(find . ! \( -path './.git' -prune \) -type d )
+  TARGETS=$(find . ! \( -path './.git' -prune \) -type d )
 
-    if [[ ! -d $BACKUP ]]; then
-        mkdir $BACKUP
+  if [[ ! -d $BACKUP ]]; then
+    mkdir $BACKUP
+  fi
+
+  for f in $TARGETS; do
+    if [ -d $f ]; then
+      mv $f ./backup_dots
     fi
-
-    for f in $TARGETS; do
-        if [ -d $f ]; then
-            mv $f ./backup_dots
-        fi
-    done
+  done
 }
 
 if [[ "$#" -lt 1 ]]; then
@@ -27,19 +65,20 @@ ac="$#"
 cmd=$args
 
 if [[ $cmd == "init" ]]; then
-    ./bootstrap.sh
-fi
-if [[ $cmd == "status" ]]; then
-    echo "asdf"
-    if [[ $(which tig) ]]; then
-        cd $DIR
-        tig status
-    else
-        git --git-dir $DIR/.git --work-tree $DIR status
-    fi
+  ./bootstrap.sh
+elif [[ $cmd == "status" ]]; then
+  if [[ $(which tig) ]]; then
+    cd $DIR
+    tig status
+  else
+    git --git-dir $DIR/.git --work-tree $DIR status
+  fi
+elif [[ $cmd == "link" ]]; then
+  link $2
 else
-    echo "unkown command"
+  echo "unkown command"
 fi
+
 
 # else if [[ $cmd == "add" ]]; then
 #     target=$(pwd)/args[2]

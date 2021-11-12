@@ -15,7 +15,21 @@ export PATH=${PATH}:$JAVA_HOME/bin
 export PATH=~/jetbrains:$PATH
 export PATH=${PATH}:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld
 alias casm="casm.sh"
-# -- List Plugins ----------------------------------------------------------------
+
+export ZSH_WAKATIME_BIN=/usr/local/bin/wakatime
+# # -- Plugin manager zplug -----------------------------------------------------------
+# export ZPLUG_HOME=/usr/local/opt/zplug
+# source $ZPLUG_HOME/init.zsh
+
+# -- List Plugins ---------------------------------------------------------------------
+
+# -- fast-syntax-highlighting ---------------------------------------------------------
+# git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git \
+#   ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+
+# -- zsh prompt benchmark -------------------------------------------------------------
+# git clone https://github.com/romkatv/zsh-prompt-benchmark.git "$ZSH_CUSTOM/plugins/zsh-prompt-benchmark"
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -31,25 +45,33 @@ plugins=(
   fd
   z
   zsh-prompt-benchmark
-  zsh-syntax-highlighting
+  fast-syntax-highlighting
+  # zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-interactive-cd
-  # osx
+  wakatime
 )
 
 # -- Plugin setups ----------------------------------------------------------------
 
 # -- fzf option -------------------------------------------------------------------
 
-export FZF_DEFALT_COMMAND="fd . -t f"
-export FZF_DEFAULT_OPTS='--ansi --height 60% --layout=reverse --border'
+# export FZF_DEFALT_COMMAND="fd . -t f"
+export FZF_DEFALT_COMMAND='fd -H -E ".git" -t f'
+export FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}" --ansi --height 60% --layout=reverse --border'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'  --preview-window=up:40%"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 # -- man page with bat ------------------------------------------------------------
 
-export MANPAGER="bat -p -l man"
+# bat as manpager
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# set manpager as vim or nvim
+export MANPAGER='/bin/bash -c "vim -MRn -c \
+    \"set buftype=nofile showtabline=0 ft=man ts=4 nomod nolist nornu nonu noma\" \
+    -c \"normal L\" -c \"nmap q :qa<CR>\"</dev/tty <(col -b)"'
 
 # -- zsh autosuggestion -----------------------------------------------------------
 bindkey '^[' beginning-of-line
@@ -198,6 +220,8 @@ fz() {
 
 # NVIM SETUP
 alias vi="nvim"
+alias vf="fzf | xargs nvim"
+alias vdiff="nvim -d"
 
 # customized alias setups
 alias ff="fzf"

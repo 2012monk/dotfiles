@@ -4,44 +4,23 @@ endif
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-    "toml",
-    "scss",
-    "cpp",
-    "c",
-    "java",
-    "python",
-    "bash",
-    "vim",
-    "json",
-    "yaml",
-    "javascript",
-    "dockerfile",
-    "kotlin",
-    "latex",
-    "cmake",
-    "json",
-    "css",
-    "lua",
-    "go",
-    "fish",
-    "dot"
-    },
+  ensure_installed = "maintained",
   -- ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ignore_install = {  }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = { },  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
+    use_languagetree = true,
     additional_vim_regex_highlighting = false,
   },
-  indent = {
-    enable = true,
-    disable = {},
-    },
+  context_commentstring = {
+    enable = true
+  },
+  indent = {enable = true},
+  rainbow = {
+    enable = false,
+    extended_mode = true,
+    max_file_lines = 1000
+  },
   incremental_selection = {
     enable = true,
     keymaps = {
