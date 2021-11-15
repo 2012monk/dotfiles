@@ -11,9 +11,10 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/$USER/.oh-my-zsh"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home
-export PATH=${PATH}:$JAVA_HOME/bin
-export PATH=~/jetbrains:$PATH
-export PATH=${PATH}:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld
+export PATH="$PATH:$JAVA_HOME/bin"
+export PATH="$HOME/jetbrains:$PATH"
+export PATH="$PATH:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld"
+export PATH="$HOME/.cargo/bin:$PATH"
 alias casm="casm.sh"
 
 export ZSH_WAKATIME_BIN=/usr/local/bin/wakatime
@@ -233,6 +234,8 @@ alias ll="lsd -l"
 alias lt="lsd --tree"
 alias ls="lsd"
 alias status="neofetch"
+alias v="fasd -e nvim"
+alias c="fasd_cd -d"
 
 zshdump() {
     autoload -Uz compinit
