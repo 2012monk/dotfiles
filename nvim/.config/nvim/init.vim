@@ -37,6 +37,7 @@ if has("autocmd")
     autocmd FileType json setlocal ts=2 sts=2 sw=2 et
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
     autocmd FileType toml setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType graphql setlocal ts=2 sts=2 sw=2 et
 endif
 
 source  ~/.config/nvim/plug.vim
@@ -114,3 +115,5 @@ let g:startify_session_autoload=1
 let g:startify_session_dir = '~/.config/nvim/session'
 
 :command Pyrun :w | below new term python3<CR>
+
+set rtp+=/usr/local/opt/fzf

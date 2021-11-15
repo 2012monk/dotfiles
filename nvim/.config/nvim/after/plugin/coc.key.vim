@@ -59,6 +59,9 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
+" goto opt
+" coc.preferences.jumpCommand" : "split",
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)

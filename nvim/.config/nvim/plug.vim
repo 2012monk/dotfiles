@@ -27,8 +27,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'johngrib/vim-game-code-break'
-
 Plug 'mhinz/vim-startify' " session manage
 
 Plug 'easymotion/vim-easymotion' " easymotion
@@ -41,7 +39,8 @@ Plug 'wakatime/vim-wakatime'
 
 Plug 'plasticboy/vim-markdown'
 
-" lsp
+Plug 'rust-lang/rust.vim'
+
 if has("nvim")
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}

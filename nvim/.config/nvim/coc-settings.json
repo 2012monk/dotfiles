@@ -1,7 +1,7 @@
 {
-	"coc.preferences.jumpCommand" : "split",
 	"suggest.enablePreview": true,
   "pyright.enable": true,
+  "coc.preferences.formatOnSaveFiletypes": ["markdown", "rust"],
   "python.pythonPath": "python3",
   "python.linting.enabled": true,
   "python.analysis.autoImportCompletions": true,

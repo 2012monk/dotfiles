@@ -1,18 +1,18 @@
 let NERDTreeShowHidden=1
 
 " Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
 
 " Start NERDTree and leave the cursor in it.
-autocmd VimEnter * NERDTree
+" autocmd VimEnter * NERDTree
 
 " Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
+" autocmd VimEnter * NERDTree | wincmd p
 
 " Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
