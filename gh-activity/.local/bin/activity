@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+QUERY=$HOME/.gh-activity/query.gql
+RES=/tmp/$GIT_USER-activity
+T_CNT=
+S_DATE=
+E_DATE=
+RESET=false
+DAY=true
+
+WHITE="250;243;243"
+BROWN="231;212;181"
+BLOCK="  "
+COLS=$(tput cols)
+
+# dependency
+if [[ ! $(which jq) ]]; then
+  echo "jq not found install jq"
+  exit 1
+fi
+
+if [[ ! $(which gh) ]]; then
+  echo "gh (github-cli) not fount install gh"
+  exit 1
+fi
+
+if [[ ! -f $QUERY ]]; then
+  echo "query file not found check query file"
+  exit 1
+fi
+
+if [[ -z $GIT_USER ]]; then
+  read -p "Enter github id>" GIT_USER
+  echo "if you don't want to see this message again set GIT_USER to your shell config"
+fi
+
+if [[ "$#" -gt 1 ]]; then
+  while :;do
+    case "${1}" in
+      -r | --reset) RESET=true;;
+    esac
+    shift
+  done
+fi
+if [[ $COLS -lt 112 && COLS -gt 106 ]]; then 
+  DAY=false
+elif [[ $COLS -lt 106 && $COLS -gt 59 ]]; then
+  DAY=true
+  BLOCK=" "
+elif [[ $COLS -lt 59 ]]; then
+  DAY=false
+  BLOCK=" "
+fi
+
+hex() {
+  echo "ibase=16;$1" | bc
+}
+
+hex_to_rgb() {
+  str=""
+  for i in 1 3 5; do
+    str+=$(hex ${1:$i:2})
+    if [[ ! $i -eq 5 ]]; then
+      str+=";"
+    fi
+  done
+  echo $str
+}
+
+# load contribution info by github graphql
+download_activity() {
+  gh api graphql --cache="2h" -f query="$(sed "s/_USER/$GIT_USER/g" < $QUERY)" > $RES
+  name=$(cat $RES | jq '.data.user.name' | more)
+  for c in $(cat $RES | jq '.data.user.contributionsCollection.contributionCalendar.colors[]' | tr "a-z" "A-Z" | tr -d "\"") "#EBEDF0"; do
+    key=$(echo $c | tr "A-Z" "a-z")
+    value=$(hex_to_rgb $c)
+    sed -i ".orig" "s/$key/$value/g" $RES
+  done
+  echo "load complete"
+}
+
+# setup variables
+load_var() {
+  start='.data.user.contributionsCollection.startedAt'
+  end='.data.user.contributionsCollection.endedAt'
+  total='.data.user.contributionsCollection.contributionCalendar.totalContributions'
+  vars=( $(jq -c "($start, $end | fromdate ), $total" < $RES | tr -d '"') )
+  S_DATE=$(date -R -r ${vars[0]} "+%a %d, %Y")
+  E_DATE=$(date -R -r ${vars[1]} "+%a %d, %Y")
+  T_CNT=${vars[2]}
+}
+if $RESET || [[ -z $(find /tmp/ -mtime -1 -name "$GIT_USER-activity") ]]; then
+  download_activity
+fi
+
+load_var
+weeks=($(cat $RES | jq -c '.data.user.contributionsCollection.contributionCalendar.weeks[] | .contributionDays[] | .color' | tr -d '"'))
+
+# output start
+printf "\e[38;2${BROWN}mgithub.com/%s\n%'d contributions in last year\n%s ~ %s\n\e[m" $GIT_USER $T_CNT "$S_DATE" "$E_DATE"
+printf "\e[0m"
+
+for i in {0..6}; do
+  if [[ $DAY ]]; then
+    j=`expr $i + 1`
+    DAY=$(date -R -v${j}d "+%a")
+    printf "\e[38;2;${BROWN}m$DAY  "
+  fi
+  for j in {0..52}; do
+    idx=`expr $j \* 7 + $i`
+    printf "\e[48;2;${weeks[idx]}m$BLOCK"
+    printf "\e[0m"
+  done
+  printf '\n'
+done
+
+# query='{"query":"query '"$(sed "s/_USER/$GIT_USER/g" <"query.gql" | tr '\n' ',' | sed 's/,/\\n/g')"'"}'
+# gh api graphql -f query="$(< "query.gql")" > tt

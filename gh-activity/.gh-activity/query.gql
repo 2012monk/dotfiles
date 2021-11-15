@@ -1,0 +1,24 @@
+query{
+  user(login: "_USER") {
+    name
+    createdAt
+    contributionsCollection {
+      startedAt
+      endedAt
+      contributionCalendar {
+        totalContributions
+        colors
+        weeks {
+          contributionDays {
+            date
+            weekday
+            color
+            contributionCount
+            contributionLevel
+          }
+        firstDay
+        }
+      }
+    }
+  }
+}

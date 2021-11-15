@@ -15,6 +15,7 @@ export PATH="$PATH:$JAVA_HOME/bin"
 export PATH="$HOME/jetbrains:$PATH"
 export PATH="$PATH:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 alias casm="casm.sh"
 
 export ZSH_WAKATIME_BIN=/usr/local/bin/wakatime
@@ -219,6 +220,9 @@ fz() {
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
 
+# github activity
+export GIT_USER=2012monk
+
 # NVIM SETUP
 alias vi="nvim"
 alias vf="fzf | xargs nvim"
@@ -232,10 +236,12 @@ alias tg="tig"
 alias la="lsd -la"
 alias ll="lsd -l"
 alias lt="lsd --tree"
+alias lta="lsd -a --tree"
 alias ls="lsd"
 alias status="neofetch"
 alias v="fasd -e nvim"
 alias c="fasd_cd -d"
+alias gac="activity"
 
 zshdump() {
     autoload -Uz compinit
@@ -250,3 +256,5 @@ promptdump() {
     set -x
     set +x
 }
+
+
