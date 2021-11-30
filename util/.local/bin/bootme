@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+idx=$(who -bH | head -1 | awk '{print index($0, "WHEN") - 1}')
+line=$(who -b)
+d=${line:$idx}
+before_7days=$(date -v -7d "+%s")
+last_restart=$(date -j -f "%b %d %H:%M " "$d" "+%s")
+_diff=$(( $(echo $(date "+%s") - $before_7days | bc)/86400 ))
+
+if [[ $before_7days -gt $last_restart ]]; then
+  cat <<EOF
+REBOOT!
+system booted after 7 days you need to reboot
+---------------------------------------------
+     last restarted at $d
+     $_diff days after last restarted
+---------------------------------------------
+EOF
+read -r -n 1 -p "if you want to reboot y/n" flag
+  if [[ $flag =~ ^([y|Y])$ ]]; then
+    sudo reboot
+  fi
+fi
