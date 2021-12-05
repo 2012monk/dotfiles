@@ -114,10 +114,11 @@ weeks=($(cat $RES | jq -c '.data.user.contributionsCollection.contributionCalend
 printf "\e[38;2${BROWN}mgithub.com/%s\n%'d contributions in last year\n%s ~ %s\n\e[m" $GIT_USER $T_CNT "$S_DATE" "$E_DATE"
 printf "\e[0m"
 out=""
+DAYS=("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
 for i in {0..6}; do
   if $P_DAY; then
     j=`expr $i + 1`
-    DAY=$(date -R -v${j}d "+%a")
+    DAY=${DAYS[i]}
     printf "\e[38;2;${BROWN}m$DAY  "
     out+="\e[38;2;${BROWN}m$DAY  "
   fi
