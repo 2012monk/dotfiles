@@ -29,5 +29,13 @@
 				}
 			}
 		}
-	}
+	},
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-11",
+      "path": "/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home",
+      "default": true
+    }
+  ],
+  "java.home": "/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home"
 }

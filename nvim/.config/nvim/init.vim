@@ -5,7 +5,7 @@
 
 filetype plugin indent on
 
-"set -g TERM xterm-256color
+" set -g TERM xterm-256color
 set hlsearch " search highlight
 set ruler
 set title
@@ -13,19 +13,26 @@ set nobackup
 set wmnu " tab autocomplete
 set showmatch " show match parenthesis
 set history=1000
-set nowrap
-set nu
+set wrap " display linees as log line
+set scrolloff=8
+set updatetime=300
+set noswapfile
+set ignorecase
+" set nu
+set rnu
 set incsearch
 set showcmd
 set autoread
 
-set cindent
+" set cindent
 set si " smart indent
 set expandtab " tab -> space
 set tabstop=4
 set shiftwidth=4
 set nocompatible
 
+set undodir=~/.vim/undodir
+set undofile
 set splitright
 " set autoindent
 " language indent size
@@ -45,7 +52,7 @@ source  ~/.config/nvim/plug.vim
 " COC setup
 set encoding=utf-8
 
-set hidden
+ set hidden
 
 " show white space
 set showbreak=↪
@@ -117,3 +124,9 @@ let g:startify_session_dir = '~/.config/nvim/session'
 :command Pyrun :w | below new term python3<CR>
 
 set rtp+=/usr/local/opt/fzf
+
+let g:vim_markdown_conceal_code_blocks=0
+let g:vim_markdown_conceal=0
+let g:vim_markdown_folding_diabled=1
+
+highlight Comment cterm=italic

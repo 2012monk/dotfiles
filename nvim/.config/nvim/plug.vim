@@ -40,6 +40,8 @@ Plug 'wakatime/vim-wakatime'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'rust-lang/rust.vim'
+Plug 'puremourning/vimspector'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 if has("nvim")
   Plug 'neovim/nvim-lspconfig'
