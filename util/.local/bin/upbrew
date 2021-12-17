@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+brew update 2>&1 1> /dev/null
+brew outdated
+read -r -n 1 -p "upgrade? y/n" flag
+
+if [[ $flag =~ ^([y|Y])$ ]]; then
+  nohup brew upgrade 2>/tmp/brew_err.log 1>/dev/null
+  if [[ -s /tmp/brew_err.log ]]; then
+    cat /tmp/brew_err.log
+  fi
+fi
