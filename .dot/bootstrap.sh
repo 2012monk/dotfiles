@@ -13,7 +13,8 @@ echo "following program will be installed via brew"
 cat $HOME/dotfiles/Brewfile | cut f2 -d ' ' | tr -d '\"' 
 read -r -n 1 -p "[y/n]" ans
 if [[ "$ans" =~ ^([yY])$ ]]; then
-    brew update
+    brew update; then
+    sudo reboot
     brew tap homebrew/bundle
     brew bundle --file=$HOME/dotfiles/Brewfile
     brew cleanup

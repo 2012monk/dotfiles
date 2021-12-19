@@ -11,14 +11,19 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/$USER/.oh-my-zsh"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home
-export PATH="$PATH:$JAVA_HOME/bin"
+# JAVA_HOME /Home was default
+export PATH="$PATH:$JAVA_HOME"
 export PATH="$HOME/jetbrains:$PATH"
-export PATH="$PATH:/Users/leesoungmook/Desktop/A/FUN/assembly/helloworld"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-alias casm="casm.sh"
+export PATH="$HOME/usr/local/sbin:$PATH"
 
 export ZSH_WAKATIME_BIN=/usr/local/bin/wakatime
+
+# -- JDK set up -----------------------------------------------------------------------
+
+# export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+# export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
 # # -- Plugin manager zplug -----------------------------------------------------------
 # export ZPLUG_HOME=/usr/local/opt/zplug
 # source $ZPLUG_HOME/init.zsh
@@ -51,7 +56,7 @@ plugins=(
   # zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-interactive-cd
-  wakatime
+  # wakatime
 )
 
 # -- Plugin setups ----------------------------------------------------------------
@@ -61,7 +66,7 @@ plugins=(
 # export FZF_DEFALT_COMMAND="fd . -t f"
 export FZF_DEFALT_COMMAND='fd -H -E ".git" -t f'
 export FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}" --ansi --height 60% --layout=reverse --border'
-export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'  --preview-window=up:40%"
+export FZF_CTRL_T_OPTS="--preview '(bat -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'  --preview-window=up:40%"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
@@ -208,11 +213,6 @@ DEFAULT_USER=leesoungmook
 # scm_breeze
 # [ -s "/Users/leesoungmook/.scm_breeze/scm_breeze.sh" ] && source "/Users/leesoungmook/.scm_breeze/scm_breeze.sh"
 
-# Check zsh startup time function
-timezsh() {
-  shell=${1-$SHELL}
-  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
-}
 
 # fff cd on exit
 fz() {
@@ -243,18 +243,13 @@ alias v="fasd -e nvim"
 alias c="fasd_cd -d"
 alias gac="activity"
 
-zshdump() {
-    autoload -Uz compinit
-    for dump in ~/.zcompdump(N.mh+24); do
-        compinit
-    done
-    compinit -C
+source ~/.local/bin/util.sh
+
+# Check zsh startup time function
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
 
-promptdump() {
-    exec 2> ~/zsh.err
-    set -x
-    set +x
-}
-
-
+# check roboot day
+bootme
