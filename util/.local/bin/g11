@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+FILE=
+INPUT=
+TEMP="_tmprun"
+RUN_TEMP="./$TEMP"
+ERR_TEMP="err.log"
+ERR_FORMAT="wrong format 
+only support *.c *.cc *.cpp"
+
+CFLAG="-Wextra -Wall"
+C_STD="-std=c11"
+CPP_STD="-std=c++17"
+OUT="-o $TEMP"
+ERR_MSG="[ERROR]"
+
+NO_CLR="\033[0m"
+FG="\033[38;2;"
+BG="\033[48;2;"
+GREEN="142;192;124m"
+WHITE="251;241;199m"
+
+
+set -E
+trap "error" ERR
+trap "cleanup" EXIT 1
+
+errmsg() {
+  printf "${FG}${GREEN}${1-}\n"
+  printf $NO_CLR
+}
+
+cleanup() {
+  rm -f $TEMP $ERR_TEMP
+}
+
+error() {
+  errmsg $ERR_MSG
+  errmsg "$(sed "s/\$RUN_TEMP/$FILE/g" $ERR_TEMP)"
+  exit 1
+}
+
+_run() {
+  if [[ -f $INPUT ]]; then
+    $RUN_TEMP < "$INPUT"
+  else
+    $RUN_TEMP
+  fi
+}
+
+_c() {
+  gcc $CFLAG $C_STD $OUT $FILE
+}
+
+_cpp() {
+  g++ $CFLAG $CPP_STD $OUT $FILE
+}
+
+run() {
+  if [[ -z $FILE ]]; then
+    errmsg "wrong format"
+    exit 1
+  fi
+  if [[ $FILE = *.c ]]; then
+    _c
+  fi
+  if [[ $FILE = *.cpp ]] || [[ $FILE = *.cc ]]; then
+    _cpp
+  fi
+  _run
+}
+
+parse_args() {
+  while :;do
+    case $1 in
+      -i | --input)
+        INPUT="$2"
+        shift
+        ;;
+      *.c | *.cc | *.cpp)
+        FILE="$1"
+        ;;
+      *) break ;;
+    esac
+    shift
+  done
+  return 0
+}
+
+parse_args "$@"
+cd $(pwd)
+run $FILE 2>"$ERR_TEMP"
+
